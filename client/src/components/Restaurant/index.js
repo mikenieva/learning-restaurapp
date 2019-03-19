@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import axios from 'axios'
+import Map from './map'
 
 
 class Restaurant extends Component {
@@ -19,17 +20,19 @@ class Restaurant extends Component {
         return (
             <div>
                 {
-                        Object.keys(restaurant).map((key, index) => {
+                    Object.keys(restaurant).map((key, index) => {
                         return (
                             <article key={index}>
-                            <h1>{restaurant[key].name}</h1>
-                            <p>{restaurant[key].address.location.lat}</p>
-                            <p>{restaurant[key].address.location.lng}</p>
-                            <p>{restaurant[key].rating}</p>
+                                <h1>{restaurant[key].name}</h1>
+                                <p>{restaurant[key].rating}</p>
+                                <Map lat={restaurant[key].address.location.lat} lng={restaurant[key].address.location.lng}/>
                             </article>
                             )
                         })
                     } 
+                
+                
+
             </div>
         );
     }
