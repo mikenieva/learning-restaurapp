@@ -8,7 +8,7 @@ import Search from '../utils/search'
 class Home extends Component {
 
     state = {
-        bigData: null
+        bigData: null,
     }
 
     async componentDidMount(){
@@ -30,11 +30,92 @@ class Home extends Component {
         this.setState({bigData: alphabetData})
     }
 
+    handleChange = event => {
+        console.log(this.state)
+        this.setState(
+            {
+                ...this.state,
+                [event.target.name]: event.target.value
+            }
+        );
+    }
+    
+    handleSubmit = event => {
+        event.preventDefault();
+        
+        const restaurant = {
+            id: this.state.id,
+            rating: this.state.rating,
+            name: this.state.name,
+            contact: {
+                site: this.state.site,
+                email: this.state.email,
+                phone: this.state.phone
+            },
+            address: {
+                street: this.state.street,
+                city: this.state.city,
+                state: this.state.state,
+                location: {
+                    lat: this.state.lat,
+                    lng: this.state.lng
+                }
+            }
+        }
+
+        axios.post(`http://localhost:3002/restaurantes`, restaurant)
+        .then(res => {
+            console.log(res.data)
+        })
+    }
+
+
+    handleLogin = (event) => {
+        event.preventDefault();
+        const user = {
+            email: this.state.loginemail,
+            password: this.state.loginpassword
+        }
+
+        axios({
+            method: 'post',
+            baseURL: 'http://localhost:3002/api/users/login',
+            headers: {'Content-Type': 'application/json'},
+            withCredentials: true,
+            data: user
+        })
+        .then(res => {
+            console.log(res.data)
+            return res.data
+        })
+    }
+
     render(props) {
         const datalist = this.state.bigData ? this.state.bigData : []
-        
         return (
             <div>
+                <form onSubmit={this.handleLogin}>
+                    <input type="text" name="loginemail" onChange={this.handleChange} />
+                    <input type="password" name="loginpassword" onChange={this.handleChange}/>
+                    <button type="submit">Add</button>
+                </form>
+                <hr/>
+                <hr/>
+                <form onSubmit={this.handleSubmit}>
+                                Id: <input type="text" name="id" onChange={this.handleChange} />
+                                Rating: <input type="text" name="rating" onChange={this.handleChange} />
+                                Name: <input type="text" name="name" onChange={this.handleChange} />
+                                Site: <input type="text" name="site" onChange={this.handleChange} />
+                                Email: <input type="text" name="email" onChange={this.handleChange} />
+                                Phone: <input type="text" name="phone" onChange={this.handleChange} />
+                                Street: <input type="text" name="street" onChange={this.handleChange} />
+                                City: <input type="text" name="city" onChange={this.handleChange} />
+                                State: <input type="text" name="state" onChange={this.handleChange} />
+                                Lat: <input type="text" name="lat" onChange={this.handleChange} />
+                                Lng: <input type="text" name="lng" onChange={this.handleChange} />
+                        <button type="submit">Add</button>
+                    </form>
+                <hr/>
                 <Search />
                 <FilterButton value="By Rating" orderingData={() => this.orderRatingData(this.state.bigData)}/>
                 <FilterButton value="Alphabetically" orderingData={() => this.orderAlphabetData(this.state.bigData)}/>
@@ -47,6 +128,7 @@ class Home extends Component {
                             <p>{datalist[key].address.location.lat}</p>
                             <p>{datalist[key].address.location.lng}</p>
                             <p>{datalist[key].rating}</p>
+                            
                             </article>
                             )
                         })

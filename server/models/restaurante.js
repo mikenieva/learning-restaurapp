@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const restauranteSchema = mongoose.Schema({
-
     id: {
         type: String
     },
@@ -41,7 +40,6 @@ const restauranteSchema = mongoose.Schema({
         type: Number
     }
 })
-
 
 const Restaurante = mongoose.model("Restaurante", restauranteSchema, "restaurants")
 
