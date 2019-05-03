@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Map from './map'
-
 
 class Restaurant extends Component {
     state = {
@@ -24,15 +22,18 @@ class Restaurant extends Component {
                         return (
                             <article key={index}>
                                 <h1>{restaurant[key].name}</h1>
-                                <p>{restaurant[key].rating}</p>
-                                <Map lat={restaurant[key].address.location.lat} lng={restaurant[key].address.location.lng}/>
+                                <p><span>Rating: </span>{restaurant[key].rating}</p>
+                                <p><span>Id: </span>{restaurant[key].id}</p>
+                                <p><span>Sitio: </span>{restaurant[key].contact.site}</p>
+                                <p><span>Email: </span>{restaurant[key].contact.email}</p>
+                                <p><span>Teléfono: </span>{restaurant[key].contact.phone}</p>
+                                <hr/>
+                                <p><span>Ciudad: </span>{restaurant[key].address.street}</p>
                             </article>
                             )
                         })
                     } 
                 
-                
-
             </div>
         );
     }
